@@ -1,0 +1,544 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f5f6fa;
+  color: #212121;
+}
+.app-container {
+  max-width: 540px;
+  margin: 0 auto;
+  padding-bottom: 60px;
+}
+header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  border-bottom: 1.5px solid #e0e0e0;
+  padding: 14px 12px 8px 12px;
+  z-index: 10;
+  font-size: 1.1em;
+}
+.burger-menu {
+  width: 36px; height: 36px; display:inline-flex; flex-direction:column; justify-content:center; align-items:center; cursor:pointer; margin-right:8px;
+}
+.burger-menu span {
+  width: 26px; height: 3px; background: #2547a5; margin: 3.3px 0; border-radius:2px; display:block;
+}
+.header-title {
+  font-size:1.13em; font-weight:600; color:#244170; vertical-align:middle;
+}
+.req-table { width:100%; border-collapse:collapse; background:#fff; border-radius:9px; overflow:hidden; box-shadow:0 2px 8px 0 rgba(30,40,60,0.06);}
+.req-table th, .req-table td { padding:12px 8px; text-align:left; border-bottom:1px solid #f0f2fa; }
+.req-table tr:last-child td { border-bottom:none; }
+.req-table .status-badge { border-radius:8px; font-size:0.98em; padding:3px 13px; font-weight:600;}
+.status-ok { background:#eafce6; color:#237a10; }
+.status-part { background:#fff9e1; color:#ae7907; }
+.status-none { background:#fbeaea; color:#b73232; }
+.req-row { cursor:pointer; transition:background 0.13s;}
+.req-row:hover { background:#f2f6fc; }
+
+#requisition-info {
+  background: #fff;
+  margin: 12px 0 5px 0;
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: 0 2px 6px rgba(30,30,60,0.02);
+  font-size: 1em;
+}
+
+/* Карточка материала */
+.material-card {
+  background: #fff;
+  margin-bottom: 16px;
+  border-radius: 13px;
+  box-shadow: 0 3px 11px 1.5px rgba(30,40,60,0.10);
+  padding: 16px 12px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 2.5px solid #3e78e0;
+  position: relative;
+  min-height: 105px;
+  transition: background 0.22s, border-color 0.22s;
+}
+.material-card[style*="background:#f7ecd7"] {
+  border-color: #c9a46d !important;
+}
+
+/* Плановое количество + факт + остаток */
+.material-card .mat-qty {
+  font-size: 1.47em;
+  font-weight: 700;
+  color: #28336a;
+  margin-bottom: 3px;
+}
+.mat-qty .fact-badge {
+  color: #ff8600;
+  font-weight: 600;
+  font-size: 0.87em;
+  margin-left: 5px;
+}
+.mat-qty .remain-badge {
+  color: #ef2525;
+  font-weight: 600;
+  font-size: 0.93em;
+  margin-left: 5px;
+}
+
+/* Наименование и поставщик */
+.material-card .mat-name {
+  font-size: 1.08em;
+  font-weight: 500;
+  color: #183b8c;
+}
+.material-card .mat-supplier {
+  color: #5b6585;
+  font-size: 1em;
+  margin-top: 3px;
+}
+
+/* Статус */
+.material-card .status-wrap {
+  margin-top: 2px;
+}
+.status-select {
+  font-size: 1em;
+  border: 1.7px solid #c0d4f7;
+  background: #eef4fc;
+  border-radius: 8px;
+  padding: 8px 8px;
+  min-width: 110px;
+  font-weight: 500;
+  color: #234;
+}
+
+/* Кнопки Факт и Примечание */
+.material-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 7px;
+}
+.material-actions .btn-action {
+  flex: 1 1 0;
+  font-size: 1.05em;
+  padding: 11px 0;
+  background: #f7f8fc;      /* светло-серый/синий, гораздо менее контрастный */
+  color: #526097;           /* мягкий синий, менее резкий */
+  border: 1.2px solid #dde5ef;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.18s, color 0.18s;
+}
+.material-actions .btn-action:active { background: #dde5ef; }
+.material-actions .btn-action.note-present {
+  background: #fff9db !important;   /* мягкий светло-жёлтый */
+  color: #847000 !important;
+  border-color: #ffe28d !important;
+  font-weight: 600;
+}
+
+.accordion {
+  margin-top: 10px;
+  border-radius: 7px;
+  background: #f7f7fc;
+  box-shadow: 0 1px 4px 0px rgba(120,120,160,0.04);
+  overflow: hidden;
+}
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 10px;
+  font-weight: 500;
+  color: #2e3b68;
+  background: #edeffe;
+  border-bottom: 1px solid #e3e6ef;
+  font-size: 1em;
+  transition: background 0.15s;
+}
+.accordion-header:active { background: #e0e7ff; }
+.accordion-content {
+  display: none;
+  padding: 9px 11px 13px 11px;
+  background: #fafaff;
+}
+.accordion.open .accordion-content {
+  display: block;
+}
+.accordion-toggle {
+  font-size: 1.2em;
+  transition: transform 0.18s;
+}
+.accordion.open .accordion-toggle {
+  transform: rotate(180deg);
+}
+.clients-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 7px;
+  font-size: 0.98em;
+}
+.clients-table th, .clients-table td {
+  padding: 4px 6px;
+  border-bottom: 1px solid #ececec;
+  text-align: left;
+}
+
+/* Песочные часы */
+.material-card .saving-spinner {
+  position: absolute;
+  right: 18px;
+  top: 14px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.saving-spinner svg {
+  animation: spin 1.1s linear infinite;
+  width: 22px; height: 22px;
+  color: #296fff;
+}
+@keyframes spin {
+  0% { transform: rotate(0);}
+  100% { transform: rotate(360deg);}
+}
+
+/* Action bar */
+#action-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: #fff;
+  border-top: 1.5px solid #e3e7f2;
+  display: flex;
+  gap: 14px;
+  padding: 12px 8px;
+  justify-content: center;
+  z-index: 50;
+}
+#action-bar .btn {
+  flex: 1 1 48%;
+  min-width: 120px;
+  font-size: 1.07em;
+  padding: 12px 0;
+}
+.btn {
+  background: #296fff;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 7px 18px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.18s;
+  font-weight: 500;
+}
+.btn:active { background: #1743a1; }
+.btn-secondary {
+  background: #f4f7fd;
+  color: #183060;
+  border: 1.2px solid #e2e7f1;
+}
+
+/* Попап */
+.popup-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center; justify-content: center;
+  background: rgba(30,40,60,0.19);
+  z-index: 200;
+}
+.popup-content {
+  background: #fff;
+  border-radius: 14px;
+  min-width: 270px;
+  max-width: 96vw;
+  padding: 22px 15px;
+  box-shadow: 0 4px 24px 3px rgba(40,60,120,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  font-size: 1.05em;
+}
+
+/* Адаптивность */
+@media (min-width: 700px) {
+  .app-container { max-width: 900px; }
+  .material-card { font-size: 1.09em; }
+  #action-bar { max-width: 900px; left: 50%; transform: translateX(-50%); }
+}
+@media (min-width: 1100px) {
+  .app-container { max-width: 1200px; }
+  #action-bar { max-width: 1200px; }
+}
+
+/* --- Стили для фильтров списка заявок --- */
+.filters-panel {
+  background: #fff;
+  margin: 12px 0 16px 0;
+  border-radius: 10px;
+  padding: 16px 12px;
+  box-shadow: 0 2px 8px 0 rgba(30,40,60,0.06);
+}
+
+.req-filters-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.req-filters-grid label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.95em;
+  color: #455a64;
+  font-weight: 500;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 9px 8px;
+  font-size: 1em;
+  border-radius: 6px;
+  border: 1.5px solid #dce2eb;
+  background: #fdfdff;
+  box-sizing: border-box;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: #296fff;
+  box-shadow: 0 0 0 2px rgba(41, 111, 255, 0.2);
+}
+
+/* Адаптивность для фильтров */
+@media (min-width: 540px) {
+  .req-filters-grid {
+      grid-template-columns: repeat(3, 1fr);
+      align-items: flex-end;
+  }
+}
+
+/* --- Стили для фильтров списка заявок --- */
+.filters-panel {
+  background: #fff;
+  margin: 12px 0 16px 0;
+  border-radius: 10px;
+  padding: 16px 12px;
+  box-shadow: 0 2px 8px 0 rgba(30,40,60,0.06);
+}
+
+.req-filters-grid {
+  display: grid;
+  /* 2 колонки по умолчанию для мобильных */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.req-filters-grid label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.95em;
+  color: #455a64;
+  font-weight: 500;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 9px 8px;
+  font-size: 1em;
+  border-radius: 6px;
+  border: 1.5px solid #dce2eb;
+  background: #fdfdff;
+  box-sizing: border-box;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: #296fff;
+  box-shadow: 0 0 0 2px rgba(41, 111, 255, 0.2);
+}
+
+/* --- Уменьшение шрифта в таблице --- */
+.req-table td {
+font-size: 0.8em;
+}
+
+/* --- Иконки для заголовков таблицы --- */
+.req-table th {
+text-align: center; /* Центрируем заголовки для красоты */
+}
+.req-table td {
+text-align: center; /* Центрируем и ячейки */
+}
+.req-table td:nth-child(3), .req-table th:nth-child(3),
+.req-table td:nth-child(4), .req-table th:nth-child(4) {
+text-align: left; /* Возвращаем для менеджера и приоритета */
+}
+
+
+/* --- Адаптивность --- */
+
+/* Для экранов шире 700px делаем 4 фильтра в ряд */
+@media (min-width: 700px) {
+  .req-filters-grid {
+      grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Для мобильных экранов (шире 540px) заменяем текст на иконки */
+@media (max-width: 540px) {
+  /* Скрываем текст в нужных заголовках */
+  .req-table .th-manager span,
+  .req-table .th-priority span {
+      display: none;
+  }
+
+  .req-table .th-manager::before,
+  .req-table .th-priority::before {
+      content: '';
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      vertical-align: middle;
+  }
+
+  /* Иконка "Менеджер" (человек) */
+  .req-table .th-manager::before {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23455a64' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'%3e%3c/path%3e%3ccircle cx='12' cy='7' r='4'%3e%3c/circle%3e%3c/svg%3e");
+  }
+
+  /* Иконка "Приоритет" (пьедестал) */
+  .req-table .th-priority::before {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23455a64' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M12 8v12m-4-4v4m8-8v8M4 20h16'%3e%3c/svg%3e");
+  }
+
+  .req-table th, .req-table td {
+    padding: 12px 4px; /* Уменьшаем отступы на мобильных */
+  }
+}
+
+/* --- Стили для фильтров списка заявок --- */
+.filters-panel {
+  background: #fff;
+  margin: 12px 0 16px 0;
+  border-radius: 10px;
+  padding: 16px 12px;
+  box-shadow: 0 2px 8px 0 rgba(30,40,60,0.06);
+}
+
+.req-filters-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.req-filters-grid label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.95em;
+  color: #455a64;
+  font-weight: 500;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 9px 8px;
+  font-size: 1em;
+  border-radius: 6px;
+  border: 1.5px solid #dce2eb;
+  background: #fdfdff;
+  box-sizing: border-box;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: #296fff;
+  box-shadow: 0 0 0 2px rgba(41, 111, 255, 0.2);
+}
+
+/* --- Уменьшение шрифта в таблице --- */
+.req-table td {
+font-size: 0.8em;
+}
+
+/* --- Центрирование в таблице --- */
+.req-table th, .req-table td {
+text-align: center;
+vertical-align: middle;
+}
+.req-table td:nth-child(3), .req-table th:nth-child(3) {
+text-align: left;
+}
+
+
+/* --- Адаптивность --- */
+@media (min-width: 700px) {
+  .req-filters-grid {
+      grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .req-table .th-manager span,
+  .req-table .th-priority span {
+      display: none;
+  }
+
+  .req-table .th-manager::before,
+  .req-table .th-priority::before {
+      content: '';
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      vertical-align: middle;
+  }
+
+  .req-table .th-manager::before {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23455a64' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'%3e%3c/path%3e%3ccircle cx='12' cy='7' r='4'%3e%3c/circle%3e%3c/svg%3e");
+  }
+
+  /* --- ИЗМЕНЕНО: Новая иконка для Приоритета (медаль) --- */
+  .req-table .th-priority::before {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23455a64' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M12 2l3.09 6.3 6.91.99-5 4.86 1.18 6.85L12 17.25l-6.18 3.25L7 14.15l-5-4.86 6.91-.99L12 2z'%3e%3c/path%3e%3c/svg%3e");
+  }
+
+  .req-table th, .req-table td {
+    padding: 12px 4px;
+  }
+}
+
+/* --- НОВОЕ: Стили для "липкой" шапки заявки --- */
+#requisition-info {
+position: sticky;
+/* Располагаем под основной шапкой (высота которой примерно 60px) */
+top: 60px;
+z-index: 5; /* Ниже основной шапки (z-index: 10), но выше контента */
+background: #f5f6fa; /* Фон, чтобы контент не просвечивал при скролле */
+/* Небольшая тень для отделения от контента */
+box-shadow: 0 4px 6px -6px rgba(0,0,0,0.2);
+margin-bottom: 12px;
+}
+
+/* --- НОВОЕ: Стили для кликабельных полей в аккордеоне --- */
+.clickable-field {
+color: #296fff;
+cursor: pointer;
+font-weight: 500;
+text-decoration: none;
+display: inline-block;
+padding: 2px 0;
+}
+.clickable-field:hover {
+text-decoration: underline;
+}
